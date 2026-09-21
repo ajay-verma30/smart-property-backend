@@ -123,7 +123,16 @@ const loginUser = async (data) => {
   const email_hash = hashValue(email);
 
   const userRes = await db.query(
-    `SELECT * FROM users WHERE email_hash=$1`,
+    `SELECT 
+       id,
+       password,
+       role,
+       email_verified,
+       identity_verified,
+       is_active,
+       is_banned
+     FROM users 
+     WHERE email_hash = $1`,
     [email_hash]
   );
 
@@ -136,13 +145,31 @@ const loginUser = async (data) => {
 
   const user = userRes.rows[0];
 
-  if (!user.email_verified) {
+  // Account inactive
+  if (!user.is_active) {
     throw {
       type: "VALIDATION",
-      message: "Email not verified",
+      message: "Account is inactive",
     };
   }
 
+  // Account banned
+  if (user.is_banned) {
+    throw {
+      type: "VALIDATION",
+      message: "Your account has been banned",
+    };
+  }
+
+  // Email not verified
+  if (!user.email_verified) {
+    throw {
+      type: "VALIDATION",
+      message: "Please verify your email before logging in",
+    };
+  }
+
+  // Password verification
   const passwordCheck = await bcrypt.compare(
     password,
     user.password
@@ -169,6 +196,7 @@ const loginUser = async (data) => {
     [user.id, refreshTokenHash]
   );
 
+  // Update last login
   await db.query(
     `UPDATE users
      SET last_login_at = NOW()
@@ -180,6 +208,7 @@ const loginUser = async (data) => {
     user: {
       id: user.id,
       role: user.role,
+      verified: user.identity_verified
     },
     accessToken,
     refreshToken,

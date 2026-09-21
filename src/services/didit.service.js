@@ -14,7 +14,7 @@ async function createVerificationSession(userId) {
     },
     body: JSON.stringify({
       workflow_id: DIDIT_WORKFLOW_ID,
-      callback: `${APP_BASE_URL}/verification-complete`,
+      callback: `${process.env.FRONTEND_BASE_URL}/verification-complete`,
       callback_method: 'both',
       vendor_data: String(userId)
     })
