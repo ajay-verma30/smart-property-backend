@@ -21,6 +21,9 @@ router.post(
 
       // 2. Parse webhook
       const event = JSON.parse(rawBody.toString());
+      console.log("========== DIDIT WEBHOOK BODY ==========");
+console.log(JSON.stringify(event, null, 2));
+console.log("========================================");
 
       const {
         status,
