@@ -9,18 +9,8 @@ router.post(
   express.raw({ type: 'application/json' }),
   async (req, res) => {
 
-    const signature = req.headers['x-didit-signature'];
+    const signature = req.headers['x-signature-v2'];
     const rawBody = req.body;
-
-    console.log("========== DIDIT WEBHOOK ==========");
-    console.log(req.headers);
-    console.log("====================");
-    console.log("Signature:", signature);
-    console.log("Content-Type:", req.headers['content-type']);
-    console.log("Raw body type:", typeof rawBody);
-    console.log("Raw body length:", rawBody?.length);
-    console.log("===================================");
-
     // 1. Verify Didit signature
     if (!diditService.verifyWebhookSignature(rawBody, signature)) {
       console.warn('Invalid Didit webhook signature');
