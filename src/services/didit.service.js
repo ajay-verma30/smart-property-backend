@@ -29,17 +29,24 @@ async function createVerificationSession(userId) {
 }
 
 function verifyWebhookSignature(rawBody, signatureHeader) {
-  if (!signatureHeader) return false;
+  if (!signatureHeader) {
+    console.log("No Didit signature received");
+    return false;
+  }
 
   const expectedSig = crypto
     .createHmac('sha256', DIDIT_WEBHOOK_SECRET)
     .update(rawBody)
     .digest('hex');
 
+  console.log("Received signature:", signatureHeader);
+  console.log("Expected signature:", expectedSig);
+
   const a = Buffer.from(signatureHeader, 'utf8');
   const b = Buffer.from(expectedSig, 'utf8');
 
-  return a.length === b.length && crypto.timingSafeEqual(a, b);
+  return a.length === b.length &&
+    crypto.timingSafeEqual(a, b);
 }
 
 module.exports = {
