@@ -13,6 +13,8 @@ router.post(
     const rawBody = req.body;
 
     console.log("========== DIDIT WEBHOOK ==========");
+    console.log(req.headers);
+    console.log("====================");
     console.log("Signature:", signature);
     console.log("Content-Type:", req.headers['content-type']);
     console.log("Raw body type:", typeof rawBody);
