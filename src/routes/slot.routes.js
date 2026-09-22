@@ -13,7 +13,7 @@ router.post(
 
 // Anyone can view available slots (no auth needed)
 router.get(
-  "/properties/:propertyId/slots",
+  "/:propertyId/slots",
   slotController.getAvailableSlots
 );
 

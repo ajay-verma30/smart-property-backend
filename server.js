@@ -60,7 +60,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Application API Routes
-app.use('/api', slotRoutes);
+app.use('/api/slots', slotRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/property', propertyRoutes);
 

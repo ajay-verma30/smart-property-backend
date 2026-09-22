@@ -99,21 +99,17 @@ GET AVAILABLE SLOTS (public)
 ======================================================
 */
 
-const getAvailableSlots = async (propertyId, date) => {
-  if (!date) {
-    throwError("VALIDATION", "date query param is required");
-  }
-
+const getAvailableSlots = async (propertyId) => {
   const result = await db.query(
     `
     SELECT id, slot_date, start_time, end_time
     FROM property_slots
     WHERE property_id = $1
-      AND slot_date = $2
       AND status = 'available'
-    ORDER BY start_time ASC
+      AND slot_date >= CURRENT_DATE
+    ORDER BY slot_date ASC, start_time ASC
     `,
-    [propertyId, date]
+    [propertyId]
   );
 
   return result.rows;

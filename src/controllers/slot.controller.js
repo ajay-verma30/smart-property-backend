@@ -36,9 +36,8 @@ const generateSlots = async (req, res) => {
 const getAvailableSlots = async (req, res) => {
   try {
     const { propertyId } = req.params;
-    const { date } = req.query;
 
-    const slots = await slotService.getAvailableSlots(propertyId, date);
+    const slots = await slotService.getAvailableSlots(propertyId);
 
     res.status(200).json({ success: true, slots });
   } catch (err) {
