@@ -8,6 +8,7 @@ require('dotenv').config();
 const userRoutes = require('./src/routes/user.routes');
 const propertyRoutes = require('./src/routes/property.routes');
 const verificationRoutes = require('./src/routes/verification.routes');
+const slotRoutes = require('./src/routes/slot.routes');
 const db = require('./db/conn');
 
 db.testConnection();
@@ -59,6 +60,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Application API Routes
+app.use('/api', slotRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/property', propertyRoutes);
 

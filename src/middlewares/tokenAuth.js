@@ -22,7 +22,7 @@ const tokenAuth = async (req, res, next) => {
 
     // 3. check user exists in DB
     const result = await db.query(
-      `SELECT id, role, email_verified, is_banned, is_active
+      `SELECT id, role, email_verified, identity_verified, is_banned, is_active
        FROM users
        WHERE id = $1`,
       [decoded.userId]
@@ -47,7 +47,8 @@ const tokenAuth = async (req, res, next) => {
     req.user = {
       id: user.id,
       role: user.role,
-      email_verified: user.email_verified
+      email_verified: user.email_verified,
+      identity_verified: user.identity_verified
     };
 
     next();
