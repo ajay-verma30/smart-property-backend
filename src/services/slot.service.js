@@ -77,7 +77,7 @@ const generateSlots = async (ownerId, propertyId, entries) => {
   const result = await db.query(
     `
     INSERT INTO property_slots (property_id, owner_id, slot_date, start_time, end_time)
-    SELECT * FROM UNNEST($1::int[], $2::int[], $3::date[], $4::time[], $5::time[])
+    SELECT * FROM UNNEST($1::uuid[], $2::uuid[], $3::date[], $4::time[], $5::time[])
     ON CONFLICT (property_id, slot_date, start_time) DO NOTHING
     RETURNING *
     `,
