@@ -102,7 +102,11 @@ GET AVAILABLE SLOTS (public)
 const getAvailableSlots = async (propertyId) => {
   const result = await db.query(
     `
-    SELECT id, slot_date, start_time, end_time
+    SELECT
+      id,
+      TO_CHAR(slot_date, 'YYYY-MM-DD') AS slot_date,
+      start_time,
+      end_time
     FROM property_slots
     WHERE property_id = $1
       AND status = 'available'
